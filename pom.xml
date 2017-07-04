@@ -8,7 +8,7 @@
   </parent>
   <groupId>com.srotya.sidewinder.collectors</groupId>
   <artifactId>collectors-parent</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>0.0.1</version>
   <packaging>pom</packaging>
   <name>sidewinder-collectors</name>
   <description>Collectors for sidewinder</description>
@@ -107,6 +107,6 @@
     <connection>scm:git:git@github.com:srotya/sidewinder-collectors.git</connection>
     <developerConnection>scm:git:git@github.com:srotya/sidewinder-collectors.git</developerConnection>
     <url>https://github.com/srotya/sidewinder-collectors.git</url>
-    <tag>HEAD</tag>
+    <tag>collectors-parent-0.0.1</tag>
   </scm>
 </project>
