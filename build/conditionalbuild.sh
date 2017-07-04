@@ -35,12 +35,6 @@ if [ "master" == "$TRAVIS_BRANCH" ]; then
     git config --global user.name "Travis CI"
     git config --global user.email "$COMMIT_AUTHOR_EMAIL"
     
-    echo "Release Build number:$TRAVIS_BUILD_NUMBER" > build/build-info.txt
-    echo "Release Commit number:$TRAVIS_COMMIT" >> build/build-info.txt
-    git add build/build-info.txt
-    git commit -m "[ci skip] Updating build-info file"
-    git push
-    
     git checkout master || git checkout -b master
     git reset --hard origin/master
     
