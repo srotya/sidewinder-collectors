@@ -38,7 +38,7 @@ if [ "master" == "$TRAVIS_BRANCH" ]; then
     git checkout master || git checkout -b master
     git reset --hard origin/master
     
-    gpg -q --fast-import /tmp/secrets/secrets/codesign.asc >> /dev/null
+    gpg -q --fast-import --batch /tmp/secrets/secrets/codesign.asc >> /dev/null
     
     mvn -T2 -B -Darguments=-Dgpg.passphrase=$passphrase release:clean release:prepare release:perform --settings settings.xml
 fi
