@@ -14,6 +14,8 @@
   <description>Collectors for sidewinder</description>
   <modules>
     <module>collectos</module>
+    <module>flume</module>
+    <module>graphite</module>
   </modules>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
