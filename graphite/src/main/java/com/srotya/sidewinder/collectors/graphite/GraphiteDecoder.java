@@ -99,7 +99,7 @@ public class GraphiteDecoder extends SimpleChannelInboundHandler<String> {
 			logger.fine("Ignoring bad metric:" + line);
 			return;
 		default:
-			measurementName = key[1];
+			measurementName = key[key.length - 2];
 			valueFieldName = key[key.length - 1];
 			tags.add(key[0]);
 			for (int i = 2; i < key.length - 1; i++) {
@@ -114,13 +114,13 @@ public class GraphiteDecoder extends SimpleChannelInboundHandler<String> {
 		if (parts[1].contains(".")) {
 			double value = Double.parseDouble(parts[1]);
 			dp.setFp(true).setValue(Double.doubleToLongBits(value));
-			logger.fine("Writing graphite metric (fp)" + dbName + "," + measurementName + "," + valueFieldName + ","
+			logger.info("Writing graphite metric (fp)" + dbName + "," + measurementName + "," + valueFieldName + ","
 					+ tags + "," + timestamp + "," + value);
 
 		} else {
 			long value = Long.parseLong(parts[1]);
 			dp.setFp(false).setValue(value);
-			logger.fine("Writing graphite metric (fp)" + dbName + "," + measurementName + "," + valueFieldName + ","
+			logger.info("Writing graphite metric (fp)" + dbName + "," + measurementName + "," + valueFieldName + ","
 					+ tags + "," + timestamp + "," + value);
 		}
 		Point build = dp.build();

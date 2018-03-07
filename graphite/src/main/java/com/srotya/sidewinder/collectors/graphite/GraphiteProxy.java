@@ -18,6 +18,7 @@ package com.srotya.sidewinder.collectors.graphite;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -26,7 +27,6 @@ import java.util.Properties;
 import com.srotya.sidewinder.core.rpc.WriterServiceGrpc;
 import com.srotya.sidewinder.core.rpc.WriterServiceGrpc.WriterServiceStub;
 
-import io.grpc.CompressorRegistry;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 
@@ -40,8 +40,10 @@ public class GraphiteProxy {
 		extractProperties(args, conf);
 		String address = conf.getOrDefault("sidewinder.grpc.host", "localhost");
 		int port = Integer.parseInt(conf.getOrDefault("sidewinder.grpc.port", "9928"));
-		final ManagedChannel channel = ManagedChannelBuilder.forAddress(address, port)
-				.compressorRegistry(CompressorRegistry.getDefaultInstance()).usePlaintext(true).build();
+		if (!telnetCheck(address, port)) {
+			throw new Exception("Sidewinder server not reachable on the configured port");
+		}
+		final ManagedChannel channel = ManagedChannelBuilder.forAddress(address, port).build();
 		WriterServiceStub writerService = WriterServiceGrpc.newStub(channel);
 		final GraphiteTCPServer tcp = new GraphiteTCPServer(conf, writerService);
 		tcp.start();
@@ -56,6 +58,16 @@ public class GraphiteProxy {
 				}
 			}
 		});
+	}
+
+	public static boolean telnetCheck(String address, int port) {
+		try {
+			Socket sc = new Socket(address, port);
+			sc.close();
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	private static void extractProperties(String[] args, Map<String, String> conf)
